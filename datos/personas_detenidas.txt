@@ -1,0 +1,3 @@
+200;Juan Perez;
+201;Pedro Gomez;50
+202;Luiz Fernandez Actualizado;50
