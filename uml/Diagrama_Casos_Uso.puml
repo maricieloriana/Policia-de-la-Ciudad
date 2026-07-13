@@ -1,0 +1,69 @@
+@startuml
+title Diagrama de casos de uso - Sistema Policía de la Ciudad
+left to right direction
+skinparam packageStyle rectangle
+
+actor Vigilante
+actor Investigador
+actor Administrador
+
+rectangle "Sistema de gestión de seguridad bancaria" {
+  usecase "Iniciar sesión" as UCLogin
+  usecase "Consultar sus datos" as UCPropios
+  usecase "Consultar información\ndel sistema" as UCConsultar
+
+  usecase "Gestionar entidades\nbancarias" as UCEntidades
+  usecase "Gestionar sucursales" as UCSucursales
+  usecase "Gestionar vigilantes" as UCVigilantes
+  usecase "Registrar contrataciones" as UCContrataciones
+  usecase "Gestionar personas\ndetenidas" as UCPersonas
+  usecase "Gestionar bandas" as UCBandas
+  usecase "Registrar asaltos" as UCAsaltos
+  usecase "Gestionar jueces" as UCJueces
+  usecase "Registrar juicios" as UCJuicios
+  usecase "Gestionar usuarios" as UCUsuarios
+  usecase "Guardar y recuperar datos" as UCPersistencia
+}
+
+Vigilante --> UCLogin
+Vigilante --> UCPropios
+
+Investigador --> UCLogin
+Investigador --> UCConsultar
+
+Administrador --> UCLogin
+Administrador --> UCConsultar
+Administrador --> UCEntidades
+Administrador --> UCSucursales
+Administrador --> UCVigilantes
+Administrador --> UCContrataciones
+Administrador --> UCPersonas
+Administrador --> UCBandas
+Administrador --> UCAsaltos
+Administrador --> UCJueces
+Administrador --> UCJuicios
+Administrador --> UCUsuarios
+
+UCEntidades ..> UCPersistencia : <<include>>
+UCSucursales ..> UCPersistencia : <<include>>
+UCVigilantes ..> UCPersistencia : <<include>>
+UCContrataciones ..> UCPersistencia : <<include>>
+UCPersonas ..> UCPersistencia : <<include>>
+UCBandas ..> UCPersistencia : <<include>>
+UCAsaltos ..> UCPersistencia : <<include>>
+UCJueces ..> UCPersistencia : <<include>>
+UCJuicios ..> UCPersistencia : <<include>>
+UCUsuarios ..> UCPersistencia : <<include>>
+
+note bottom of UCPropios
+El vigilante solo puede
+consultar la información
+asociada a su cuenta.
+end note
+
+note bottom of UCConsultar
+El investigador puede
+consultar toda la información,
+pero no modificarla.
+end note
+@enduml

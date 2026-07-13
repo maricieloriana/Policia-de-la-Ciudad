@@ -1,0 +1,132 @@
+@startuml
+title Diagrama de clases - Sistema Policía de la Ciudad
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+hide empty members
+
+class EntidadBancaria {
+  - codigo: int
+  - domicilioCentral: String
+  - sucursales: ArrayList<Sucursal>
+  + agregarSucursal(sucursal: Sucursal): void
+  + eliminarSucursal(sucursal: Sucursal): boolean
+}
+
+class Sucursal {
+  - codigo: int
+  - domicilio: String
+  - cantidadEmpleados: int
+  - entidad: EntidadBancaria
+  - contrataciones: ArrayList<Contratacion>
+  - asaltos: ArrayList<Asalto>
+  + agregarContratacion(contratacion: Contratacion): void
+  + eliminarContratacion(contratacion: Contratacion): void
+  + agregarAsalto(asalto: Asalto): void
+  + eliminarAsalto(asalto: Asalto): void
+}
+
+class Vigilante {
+  - codigo: int
+  - edad: int
+  - contrataciones: ArrayList<Contratacion>
+  + agregarContratacion(contratacion: Contratacion): void
+  + eliminarContratacion(contratacion: Contratacion): void
+}
+
+class Contratacion {
+  - id: int
+  - fecha: LocalDate
+  - conArma: boolean
+  - vigilante: Vigilante
+  - sucursal: Sucursal
+}
+
+class PersonaDetenida {
+  - codigo: int
+  - nombreCompleto: String
+  - banda: Banda
+  - asaltos: ArrayList<Asalto>
+  - juicios: ArrayList<Juicio>
+  + agregarAsalto(asalto: Asalto): void
+  + eliminarAsalto(asalto: Asalto): void
+  + agregarJuicio(juicio: Juicio): void
+  + eliminarJuicio(juicio: Juicio): void
+}
+
+class Banda {
+  - numero: int
+  - cantidadMiembros: int
+  - integrantes: ArrayList<PersonaDetenida>
+  + agregarIntegrante(integrante: PersonaDetenida): void
+  + eliminarIntegrante(integrante: PersonaDetenida): void
+}
+
+class Asalto {
+  - id: int
+  - fecha: LocalDate
+  - sucursal: Sucursal
+  - persona: PersonaDetenida
+}
+
+class Juez {
+  - clave: int
+  - nombre: String
+  - aniosServicio: int
+  - juicios: ArrayList<Juicio>
+  + agregarJuicio(juicio: Juicio): void
+  + eliminarJuicio(juicio: Juicio): void
+}
+
+class Juicio {
+  - id: int
+  - condenado: boolean
+  - aniosCarcel: int
+  - persona: PersonaDetenida
+  - juez: Juez
+}
+
+class Usuario {
+  - nombreUsuario: String
+  - password: String
+}
+
+class Administrador
+class Investigador
+
+class UsuarioVigilante {
+  - vigilante: Vigilante
+}
+
+Usuario <|-- Administrador
+Usuario <|-- Investigador
+Usuario <|-- UsuarioVigilante
+
+EntidadBancaria "1" *-- "1..*" Sucursal : posee
+Sucursal "1" -- "0..*" Contratacion
+Vigilante "1" -- "0..*" Contratacion
+Sucursal "1" -- "0..*" Asalto
+PersonaDetenida "1" -- "0..*" Asalto
+Banda "0..1" -- "0..*" PersonaDetenida : integra
+PersonaDetenida "1" -- "0..*" Juicio
+Juez "1" -- "0..*" Juicio
+UsuarioVigilante "1" -- "1" Vigilante : corresponde a
+
+note right of Contratacion
+Clase asociativa entre
+Sucursal y Vigilante.
+Guarda fecha y si fue
+contratado con arma.
+end note
+
+note right of Asalto
+Clase asociativa entre
+PersonaDetenida y Sucursal.
+Guarda la fecha del asalto.
+end note
+
+note right of Juicio
+Relaciona una persona con
+el juez de cada delito.
+Registra condena y años.
+end note
+@enduml
